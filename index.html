@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دعوة حضور خاصة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #f8fafc; }
+        .hidden { display: none; }
+        /* تصميم دائرة التحميل */
+        .loader { border-top-color: #3498db; -webkit-animation: spinner 1.5s linear infinite; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div id="mainCard" class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
+        <div class="h-32 bg-gradient-to-r from-blue-600 to-indigo-700 flex items-center justify-center">
+            <h1 class="text-3xl font-bold text-white shadow-sm">دعوة حضور</h1>
+        </div>
+
+        <div class="p-6">
+            <p class="text-gray-600 text-center mb-6">يسعدنا دعوتكم لحضور مناسبتنا، نرجو تأكيد الحضور عبر النموذج أدناه.</p>
+
+            <form id="rsvpForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">الاسم الثلاثي *</label>
+                    <input type="text" id="name" required class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">رقم الجوال *</label>
+                    <input type="tel" id="phone" required placeholder="05xxxxxxxx" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition" dir="ltr" style="text-align: right;">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">حالة الحضور *</label>
+                    <div class="mt-2 flex gap-4">
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="radio" name="status" value="مؤكد" checked class="text-blue-600 focus:ring-blue-500 w-4 h-4">
+                            <span class="mr-2 text-gray-700">سأحضر بإذن الله</span>
+                        </label>
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="radio" name="status" value="معتذر" class="text-red-600 focus:ring-red-500 w-4 h-4">
+                            <span class="mr-2 text-gray-700">أعتذر عن الحضور</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="guestsField">
+                    <label class="block text-sm font-medium text-gray-700">عدد المرافقين</label>
+                    <select id="guests" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <option value="0">بدون مرافقين</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">رسالة خاصة (اختياري)</label>
+                    <textarea id="message" rows="2" placeholder="اكتب رسالتك هنا..." class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"></textarea>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none transition duration-300 transform hover:-translate-y-1">
+                    تأكيد وإرسال
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="loading" class="hidden fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 backdrop-blur-sm">
+        <div class="bg-white p-8 rounded-xl flex flex-col items-center shadow-2xl">
+            <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+            <p class="text-gray-700 font-bold">جاري تسجيل بياناتك...</p>
+        </div>
+    </div>
+
+    <div id="successCard" class="hidden w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden p-6 text-center">
+        <div class="flex justify-center mb-4">
+            <div class="bg-green-100 rounded-full p-3 shadow-inner">
+                <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">تم تأكيد حضورك!</h2>
+        <p class="text-gray-600 mb-6">شكراً لك <span id="guestNameDisplay" class="font-bold text-blue-600"></span>، تسجيلك مكتمل.</p>
+
+        <div class="bg-gray-50 p-6 rounded-xl mb-6 flex flex-col items-center justify-center border-2 border-dashed border-gray-300">
+            <div id="qrcode" class="mb-3 p-2 bg-white rounded-lg shadow-sm"></div>
+            <p class="text-xs text-gray-400 font-medium">التقط صورة للشاشة أو احفظ البطاقة</p>
+        </div>
+
+        <div class="space-y-3">
+            <button onclick="downloadQR()" class="w-full bg-gray-800 text-white py-3 px-4 rounded-lg hover:bg-gray-900 transition font-bold shadow-md flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                تحميل بطاقة الدخول
+            </button>
+            
+            <a id="whatsappBtn" href="#" class="block w-full bg-green-500 text-white py-3 px-4 rounded-lg hover:bg-green-600 transition flex items-center justify-center gap-2 font-bold shadow-md">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-8.683-2.031-9.667-.272-.099-.47-.149-.669-.149-.198 0-.42.001-.643.001-.223 0-.583-.009-.89.338-.307.348-1.178 1.151-1.178 2.809 0 1.658 1.208 3.26 1.376 3.484.167.224 2.376 3.629 5.756 5.09 2.381 1.029 3.266.826 3.858.775.594-.051 1.884-.769 2.152-1.512.267-.743.267-1.38.188-1.512z"/></svg>
+                إرسال التأكيد للمنظم
+            </a>
+            <p class="text-xs text-gray-500 text-center mt-2">اضغط لإرسال البطاقة عبر واتساب</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // رابط الـ Web App الخاص بك (تم دمجه)
+        // ============================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGWft-l9UAC9etx6wYoOsRJv5nasY_Tp2LLUJUvYSqXIpigABJD8JbjXGUZbfAcDBI/exec'; 
+
+        // التعامل مع إرسال النموذج
+        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // جمع البيانات من الحقول
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const status = document.querySelector('input[name="status"]:checked').value;
+            const guests = document.getElementById('guests').value;
+            const message = document.getElementById('message').value;
+
+            // إظهار شاشة الانتظار
+            document.getElementById('loading').classList.remove('hidden');
+
+            // إرسال البيانات إلى Google Apps Script
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', // لتجاوز قيود المتصفح
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, phone, status, guests, message })
+            })
+            .then(() => {
+                // عند النجاح (أو ما يبدو كنجاح في وضع no-cors)
+                showSuccess(name, phone, status);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.");
+                document.getElementById('loading').classList.add('hidden');
+            });
+        });
+
+        // دالة عرض شاشة النجاح وتوليد الكود
+        function showSuccess(name, phone, status) {
+            // إخفاء التحميل والنموذج
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('mainCard').classList.add('hidden');
+            document.getElementById('successCard').classList.remove('hidden');
+            
+            // عرض الاسم
+            document.getElementById('guestNameDisplay').innerText = name;
+
+            // 1. توليد QR Code داخل العنصر المخصص
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = ""; // تنظيف أي كود سابق
+            new QRCode(qrContainer, {
+                text: `الاسم: ${name}\nالجوال: ${phone}\nالحالة: ${status}`,
+                width: 150,
+                height: 150,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
+            // 2. إعداد رابط زر الواتساب (التوجيه الذكي)
+            // نص الرسالة التي ستظهر في واتساب
+            const waMsg = `مرحباً، أنا ${name}، قمت بتأكيد حضوري. (مرفق صورة بطاقة الدخول)`;
+            
+            // رابط يرسل المستخدم للسكربت أولاً، والسكربت يحوله للرقم الموجود في الشيت
+            const dynamicLink = `${SCRIPT_URL}?msg=${encodeURIComponent(waMsg)}`;
+            
+            // تفعيل الرابط في الزر
+            document.getElementById('whatsappBtn').href = dynamicLink;
+        }
+
+        // دالة تحميل صورة الـ QR Code
+        function downloadQR() {
+            const img = document.querySelector('#qrcode img');
+            if(img) {
+                const link = document.createElement('a');
+                link.href = img.src;
+                // اسم الملف عند التحميل يكون باسم الضيف
+                link.download = `Invitation-${document.getElementById('guestNameDisplay').innerText}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                alert("يرجى الانتظار حتى يتم توليد الكود بالكامل.");
+            }
+        }
+    </script>
+</body>
+</html>
