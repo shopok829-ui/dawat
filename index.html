@@ -12,7 +12,6 @@
         .hidden { display: none; }
         .loader { border-top-color: #3498db; -webkit-animation: spinner 1.5s linear infinite; animation: spinner 1.5s linear infinite; }
         @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        /* تنسيق الصورة لتظهر بشكل كامل وجميل */
         .header-container { width: 100%; overflow: hidden; background-color: #eee; }
         .header-img { width: 100%; height: auto; display: block; }
     </style>
@@ -20,7 +19,6 @@
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
 
     <div id="mainCard" class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
-        
         <div class="header-container">
             <img src="header.png" onerror="this.parentElement.style.display='none'; document.getElementById('defaultHeader').style.display='flex'" class="header-img" alt="دعوة">
         </div>
@@ -30,26 +28,20 @@
 
         <div class="p-6">
             <h2 class="text-2xl font-bold text-gray-800 text-center mb-2">تسجيل الحضور</h2>
-            <p class="text-gray-600 text-center mb-6 text-sm">نرجو تعبئة البيانات أدناه لتأكيد حضوركم</p>
-
             <form id="rsvpForm" class="space-y-4">
-                <input type="text" id="name" placeholder="الاسم الثلاثي" required class="w-full px-4 py-3 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                <input type="tel" id="phone" placeholder="رقم الجوال (05xxxxxxxx)" required class="w-full px-4 py-3 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" dir="ltr" style="text-align:right">
-                
+                <input type="text" id="name" placeholder="الاسم الثلاثي" required class="w-full px-4 py-3 bg-gray-50 border rounded-lg outline-none">
+                <input type="tel" id="phone" placeholder="رقم الجوال (05xxxxxxxx)" required class="w-full px-4 py-3 bg-gray-50 border rounded-lg outline-none" dir="ltr" style="text-align:right">
                 <div class="flex gap-4 justify-center py-2">
-                    <label class="flex items-center cursor-pointer"><input type="radio" name="status" value="مؤكد" checked class="w-5 h-5 text-blue-600 ml-2"> سأحضر</label>
-                    <label class="flex items-center cursor-pointer"><input type="radio" name="status" value="معتذر" class="w-5 h-5 text-red-600 ml-2"> أعتذر</label>
+                    <label class="flex items-center cursor-pointer"><input type="radio" name="status" value="مؤكد" checked class="ml-2"> سأحضر</label>
+                    <label class="flex items-center cursor-pointer"><input type="radio" name="status" value="معتذر" class="ml-2"> أعتذر</label>
                 </div>
-
                 <select id="guests" class="w-full px-4 py-3 bg-gray-50 border rounded-lg outline-none">
                     <option value="0">بدون مرافقين</option>
                     <option value="1">مرافق 1</option>
                     <option value="2">مرافق 2</option>
                     <option value="3">مرافق 3</option>
                 </select>
-
                 <textarea id="message" rows="2" placeholder="رسالة للمنظم (اختياري)" class="w-full px-4 py-3 bg-gray-50 border rounded-lg outline-none"></textarea>
-
                 <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold shadow hover:bg-blue-700 transition">إرسال وتأكيد</button>
             </form>
         </div>
@@ -63,32 +55,25 @@
     </div>
 
     <div id="successCard" class="hidden w-full max-w-md bg-white rounded-2xl shadow-xl p-6 text-center">
-        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-        </div>
-        <h2 class="text-2xl font-bold text-gray-800">تم التأكيد بنجاح</h2>
+        <h2 class="text-2xl font-bold text-gray-800 text-green-600 mb-2">✅ تم التأكيد بنجاح</h2>
         <p class="text-gray-500 mb-6">أهلاً بك <span id="guestName" class="text-blue-600 font-bold"></span></p>
-
         <div class="bg-gray-50 border-2 border-dashed border-gray-300 p-4 rounded-xl mb-4 flex flex-col items-center">
             <div id="qrcode"></div>
-            <p class="text-xs text-gray-400 mt-2">يرجى إبراز هذا الكود عند الدخول</p>
+            <p class="text-xs text-gray-400 mt-2">احتفظ بهذا الكود</p>
         </div>
-
         <button onclick="downloadQR()" class="w-full bg-gray-800 text-white py-3 rounded-lg mb-3 font-bold">📥 حفظ البطاقة</button>
-        
-        <button id="whatsappBtn" onclick="sendToWhatsApp()" class="w-full bg-green-500 text-white py-3 rounded-lg font-bold flex justify-center items-center gap-2 shadow-lg hover:bg-green-600 transition">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-8.683-2.031-9.667-.272-.099-.47-.149-.669-.149-.198 0-.42.001-.643.001-.223 0-.583-.009-.89.338-.307.348-1.178 1.151-1.178 2.809 0 1.658 1.208 3.26 1.376 3.484.167.224 2.376 3.629 5.756 5.09 2.381 1.029 3.266.826 3.858.775.594-.051 1.884-.769 2.152-1.512.267-.743.267-1.38.188-1.512z"/></svg>
-            إرسال للمنظم
+        <button id="whatsappBtn" onclick="sendToWhatsApp()" class="w-full bg-green-500 text-white py-3 rounded-lg font-bold flex justify-center items-center gap-2">
+            إرسال للمنظم (واتساب)
         </button>
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGWft-l9UAC9etx6wYoOsRJv5nasY_Tp2LLUJUvYSqXIpigABJD8JbjXGUZbfAcDBI/exec';
+        // الرابط الجديد الذي زودتني به
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6HhVE0PYSrSMoNojYQAiKDc_dSVBxidQxkmPqlv1pRBPKs__V_uCIhZJA5W0oD2in/exec';
         let guestData = {};
 
         document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
             guestData = {
                 name: document.getElementById('name').value,
                 phone: document.getElementById('phone').value,
@@ -96,22 +81,13 @@
                 guests: document.getElementById('guests').value,
                 message: document.getElementById('message').value
             };
-
             document.getElementById('loading').classList.remove('hidden');
-
             fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(guestData)
-            })
-            .then(() => {
-                showSuccess();
-            })
-            .catch(() => {
-                alert("تأكد من الانترنت");
-                document.getElementById('loading').classList.add('hidden');
-            });
+            }).then(() => showSuccess()).catch(() => alert("تأكد من الانترنت"));
         });
 
         function showSuccess() {
@@ -119,22 +95,15 @@
             document.getElementById('mainCard').classList.add('hidden');
             document.getElementById('successCard').classList.remove('hidden');
             document.getElementById('guestName').innerText = guestData.name;
-
             const qrContainer = document.getElementById('qrcode');
             qrContainer.innerHTML = "";
-            // نصنع QR يحتوي على رقم الجوال فقط لتسهيل المسح والمطابقة
-            new QRCode(qrContainer, {
-                text: guestData.phone, 
-                width: 150, height: 150
-            });
+            new QRCode(qrContainer, { text: guestData.phone, width: 150, height: 150 });
         }
 
-        // دالة جديدة: تطلب الرقم من السيرفر ثم تفتح الواتساب (client-side)
         function sendToWhatsApp() {
             const btn = document.getElementById('whatsappBtn');
             const originalText = btn.innerHTML;
             btn.innerHTML = "جاري جلب الرقم...";
-            
             fetch(SCRIPT_URL, {
                 method: 'POST',
                 body: JSON.stringify({ action: "get_admin_phone" })
@@ -144,14 +113,11 @@
                 if(data.status === "success") {
                     const msg = `مرحباً، أنا ${guestData.name}، قمت بتأكيد حضوري. (مرفق الكود)`;
                     const url = `https://wa.me/${data.phone}?text=${encodeURIComponent(msg)}`;
-                    window.open(url, '_blank'); // فتح في نافذة جديدة (حل المشكلة)
+                    window.open(url, '_blank');
                     btn.innerHTML = originalText;
                 }
             })
-            .catch(err => {
-                alert("تعذر جلب الرقم، حاول مرة أخرى");
-                btn.innerHTML = originalText;
-            });
+            .catch(err => { alert("تعذر جلب الرقم"); btn.innerHTML = originalText; });
         }
 
         function downloadQR() {
